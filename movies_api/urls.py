@@ -18,10 +18,16 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .auth import CustomAuthToken
 from hollywood import views
+from rest_framework_swagger.views import get_swagger_view
+# from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+# from rest_framework.schemas import get_schema_view
+
+schema_view = get_swagger_view(title='Movie API')
 
 router = DefaultRouter()
 
-router.register('hollywoodapi', views.HollywoodViewSet, basename='hollywood')
+router.register('hollywood_api', views.HollywoodViewSet, basename='hollywood')
+# schema_view = get_schema_view(title='Users API', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
 
 urlpatterns = [
     # path("hollywood/",views.HollywoodAPILC.as_view()),
@@ -31,7 +37,8 @@ urlpatterns = [
     # path("allmovies/<int:id>", views.movie_data.as_view(), name="movies"),
     # path('callback/', views.index, name='leelelelelelele?'),
     path('admin/', admin.site.urls),
-    path('',include(router.urls)),
+    path('', schema_view),
+    path('movieapi/',include(router.urls)),
     path('gettoken/',CustomAuthToken.as_view())
 
 ]
